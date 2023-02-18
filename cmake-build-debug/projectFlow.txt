@@ -6,6 +6,7 @@ password
 phoneNumber
 encryption_key
 recovery_key
+account_type
 account_status
 account_level
 minimum_opening_deposit

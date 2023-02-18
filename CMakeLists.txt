@@ -3,4 +3,4 @@ project(OnlineBankPj C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(OnlineBankPj main.c)
+add_executable(OnlineBankPj main.c onlineBank.h)
