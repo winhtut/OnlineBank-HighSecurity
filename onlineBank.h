@@ -14,6 +14,7 @@
 int G_index=0; // for user counting
 int email_found = -1; // for checking email exist
 int space_array[DATA_COUNT];
+int email_valid=-1;
 
 // End of Global Variables
 
@@ -26,6 +27,8 @@ void loading_from_file();
 void main_menu();
 void space_counter();
 void printing_all_data();
+void email_validation(char to_check[50]);
+void email_exist_checking(char email[50]);
 
 struct trans{
     char note[200];
@@ -104,8 +107,58 @@ void rEgister(){
 
     char re_email[50];
     printf("This is Online Bank Register !\n");
-    printf("Enter your email to register>>:");
-    scanf(" %[^\n]",&re_email[0]);
+    email_valid=-1;
+    while (email_valid==-1) {
+        printf("Enter your email to register>>:");
+        scanf(" %[^\n]", &re_email[0]);
+
+
+        email_validation(re_email);
+        if (email_valid == -1) {
+            printf("Your email format was not valid\n");
+        }
+    }
+    printf("Your email form was valid:\n");
+    email_found=-1;
+    email_exist_checking(re_email);
+    if( email_found !=-1 ){
+        printf("Your email was already register:\n");
+        rEgister();
+    } else{
+
+        printf("Your email was saved:\n");
+        printf("Enter your username:\n");
+
+
+    }
+
+}
+void email_validation(char to_check[50]){
+
+    int space=1;
+    int format=1;
+    char valid_form[10]={'@','g','m','a','i','l','.','c','o','m'};
+    int check_counter = char_counting(to_check);
+
+    int front_counter = check_counter-10;
+
+    for(int i=0; i<front_counter ; i++){
+        if(to_check[i]==' '){
+            space=-1;
+            break;
+        }
+    }
+    for(int f=0; f<10; f++){
+        if(to_check[front_counter] != valid_form[f]){
+            format = -1;
+            break;
+        }
+        front_counter++;
+    }
+
+    if(space == 1 && format==1){
+        email_valid=1;
+    }
 }
 
 void email_exist_checking(char email[50]){
