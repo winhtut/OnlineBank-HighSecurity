@@ -39,7 +39,7 @@
 				{
 					"directoryIndex" : 0,
 					"id" : "OnlineBankPj::@6890427a1f51a3e7e1df",
-					"jsonFile" : "target-OnlineBankPj-Debug-e230b392e6dac2edfb89.json",
+					"jsonFile" : "target-OnlineBankPj-Debug-c6e2a5ecc709b32a3b78.json",
 					"name" : "OnlineBankPj",
 					"projectIndex" : 0
 				}
@@ -55,6 +55,6 @@
 	"version" : 
 	{
 		"major" : 2,
-		"minor" : 3
+		"minor" : 4
 	}
 }
