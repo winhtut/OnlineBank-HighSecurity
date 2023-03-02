@@ -99,8 +99,7 @@
 			"name" : "Header Files",
 			"sourceIndexes" : 
 			[
-				1,
-				2
+				1
 			]
 		}
 	],
@@ -115,11 +114,6 @@
 		{
 			"backtrace" : 1,
 			"path" : "onlineBank.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"path" : "user_setting.h",
 			"sourceGroupIndex" : 1
 		}
 	],

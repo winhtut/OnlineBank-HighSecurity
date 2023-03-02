@@ -6,7 +6,7 @@
 #define ONLINEBANKPJ_ONLINEBANK_H
 #include "stdio.h"
 #include "stdlib.h"
-#include "user_setting.h"
+//#include "user_setting.h"
 #define USERSIZE 1000
 #define DATA_COUNT 20
 
@@ -22,6 +22,7 @@ int strong_pass_valid=-1;
 int phone_valid=-1;
 int eKey_valid=-1;
 int reKey_valid=-1;
+int phone_found=-1;
 
 // End of Global Variables
 
@@ -44,7 +45,11 @@ void encryption_key_validation(char eKey[30]);
 void recovery_key_validation(char reKey[30]);
 void copy_two_char_array(char receiver[200] ,char transmitter[200] );
 void user_sector();
-
+void transfer_money();
+void phone_number_finding(unsigned int to_find_ph);
+void money_transaction(int transmit , int receiver , unsigned int amount);
+void printing_specific_data(int user);
+void user_withdraw();
 
 
 struct trans{
@@ -71,6 +76,7 @@ struct info{
     unsigned int loan_amount;//$
     float loan_rate;//$
     char address[100];//>>
+    int trans_amount_limit_perday;
 
     struct trans tr[300]; //transaction//>>
 
@@ -79,7 +85,7 @@ struct info{
 
 };
 
-extern struct info db[USERSIZE];
+struct info db[USERSIZE];
 
 
 void main_menu(){
@@ -134,13 +140,15 @@ void login(){
 
     }
 
-    printf("Welcome Mr/s : %s\n",db[email_found].name);
-    printf("Your Current Amount : %llu\n",db[email_found].current_amount);
+
+    user_sector();
 
 
 }
 
 void user_sector(){
+    printf("Welcome Mr/s : %s\n",db[email_found].name);
+    printf("Your Current Amount : %llu\n",db[email_found].current_amount);
     char user_option[2];
 
     printf("Press 1 To Transfer Money:\nPress 2 to Withdraw :\n");
@@ -153,6 +161,8 @@ void user_sector(){
 
     if(option == 49){
         transfer_money();
+    } else if(option==50){
+        user_withdraw();
 
     }
 
@@ -329,17 +339,31 @@ void printing_all_data() {
 
     for (int user = 0; user < G_index; user++) {
 
-        printf("%u-%s-%s-%s-%s-%u-%s-%s-%s-%d-%d-%d-%s-%llu-%s-%u-%u-%f-%s", db[user].id, db[user].name, db[user].nrc,
+        printf("%u-%s-%s-%s-%s-%u-%s-%s-%s-%d-%d-%d-%s-%llu-%s-%u-%u-%f-%s-%d", db[user].id, db[user].name, db[user].nrc,
                db[user].email, db[user].password, db[user].phoneNumber, db[user].encryption_key, db[user].recovery_key,
                db[user].account_status, db[user].account_type, db[user].account_level, db[user].minimum_opening_deposit,
                db[user].currency, db[user].current_amount, db[user].loanStatus, db[user].monthly_income,
-               db[user].loan_amount, db[user].loan_rate, db[user].address);
+               db[user].loan_amount, db[user].loan_rate, db[user].address,db[user].trans_amount_limit_perday);
         for (int gcc = 0; gcc <= space_array[user] - 19; gcc++) {
             printf("-%s", db[user].tr[gcc].note);
         }
         printf("\n");
 
     }
+}
+
+void printing_specific_data(int user){
+
+    printf("%u-%s-%s-%s-%s-%u-%s-%s-%s-%d-%d-%d-%s-%llu-%s-%u-%u-%f-%s", db[user].id, db[user].name, db[user].nrc,
+           db[user].email, db[user].password, db[user].phoneNumber, db[user].encryption_key, db[user].recovery_key,
+           db[user].account_status, db[user].account_type, db[user].account_level, db[user].minimum_opening_deposit,
+           db[user].currency, db[user].current_amount, db[user].loanStatus, db[user].monthly_income,
+           db[user].loan_amount, db[user].loan_rate, db[user].address,db[user].trans_amount_limit_perday);
+    for (int gcc = 0; gcc <= space_array[user] - 19; gcc++) {
+        printf("-%s", db[user].tr[gcc].note);
+    }
+    printf("\n");
+
 }
 
 void recovery_key_validation(char reKey[30]){
@@ -545,7 +569,7 @@ void loading_from_file(){
 
         for(register int user=0; user < USERSIZE ; user++){
 
-            fscanf(fptr ,"%u%s%s%s%s%u%s%s%s%d%d%d%s%llu%s%u%u%f%s",&db[user].id ,&db[user].name ,&db[user].nrc,&db[user].email,&db[user].password,&db[user].phoneNumber,&db[user].encryption_key,&db[user].recovery_key,&db[user].account_status,&db[user].account_type,&db[user].account_level,&db[user].minimum_opening_deposit,&db[user].currency,&db[user].current_amount,&db[user].loanStatus,&db[user].monthly_income,&db[user].loan_amount,&db[user].loan_rate,&db[user].address);
+            fscanf(fptr ,"%u%s%s%s%s%u%s%s%s%d%d%d%s%llu%s%u%u%f%s%d",&db[user].id ,&db[user].name ,&db[user].nrc,&db[user].email,&db[user].password,&db[user].phoneNumber,&db[user].encryption_key,&db[user].recovery_key,&db[user].account_status,&db[user].account_type,&db[user].account_level,&db[user].minimum_opening_deposit,&db[user].currency,&db[user].current_amount,&db[user].loanStatus,&db[user].monthly_income,&db[user].loan_amount,&db[user].loan_rate,&db[user].address,&db[user].trans_amount_limit_perday);
 
             for(register int trc=0; trc<= space_array[user]-19 ; trc++ ){
                 fscanf(fptr , "%s",&db[user].tr[trc].note[0]);
@@ -616,6 +640,110 @@ void copy_two_char_array(char receiver[200] ,char transmitter[200] ){
 
         receiver[i] = transmitter[i];
     }
+
+}
+
+//user option
+void transfer_money(){
+
+    unsigned int amount_toTrans=0;
+    unsigned int receiver_phone=0;
+    char trans_pass[50];
+    phone_found=-1;
+    while (phone_found==-1) {
+        printf("Enter receiver phone number>>:");
+        scanf("%u", &receiver_phone);
+        phone_number_finding(receiver_phone);
+
+        if(phone_found==-1){
+            printf("This is phone number is Not found in our bank\n");
+        }
+
+    }
+    while (1) {
+        printf(" Enter amount to send for %s :  %s >>:", db[phone_found].name, db[phone_found].email);
+        scanf("%u", &amount_toTrans);
+        //write here transaction limit per day
+
+        if(amount_toTrans < db[email_found].current_amount-1000){
+            break;
+        }
+    }
+    two_charArray=-1;
+    int wrong_counter=0;
+    while (two_charArray==-1){
+        printf("Your current amount %llu\nTransfer amount %u :\n",db[email_found].current_amount,amount_toTrans);
+        printf("Enter your password to confirm for transaction>>:");
+        scanf(" %[^\n]",&trans_pass[0]);
+
+        compare_two_charArray(db[email_found].password,trans_pass);
+        if(two_charArray==-1){
+            wrong_counter++;
+            if(wrong_counter==3){
+                transfer_money();
+                break;
+            }
+        }
+    }
+
+    money_transaction(email_found,phone_found,amount_toTrans);
+
+
+}
+
+void user_withdraw(){
+    char with_pass[50];
+    unsigned int withdraw_amount=0;
+    printf("Your current amount: %s : %llu\n",db[email_found].name , db[email_found].current_amount);
+    printf("Enter amount to withdraw>>:");
+    scanf("%u",&withdraw_amount);
+
+    if(withdraw_amount<db[email_found].current_amount-1000){
+        printf("Enter your password to proceed withdraw>>:");
+        scanf(" %[^\n]",&with_pass[0]);
+        two_charArray=-1;
+        compare_two_charArray(db[email_found].password , with_pass);
+        if(two_charArray==1){
+            printf("Get your withdraw amount: %u\n",withdraw_amount);
+            printf("Your current amount: %llu\n",db[email_found].current_amount-withdraw_amount);
+            user_sector();
+        } else{
+            printf("[-]Wrong credential:\n");
+            user_withdraw();
+        }
+    } else{
+        printf("Insufficient Balance:\n");
+        user_withdraw();
+    }
+
+
+}
+
+void money_transaction(int transmit , int receiver , unsigned int amount){
+
+
+    db[transmit].current_amount= db[transmit].current_amount-amount;
+    db[receiver].current_amount = db[receiver].current_amount+amount;
+    printf("Transaction complete:\n");
+    printf("Your current amount: %s : %llu\n",db[transmit].name , db[transmit].current_amount);
+    printing_specific_data(transmit);
+    user_sector();
+
+
+
+}
+
+void phone_number_finding(unsigned int to_find_ph){
+
+    for(int i=0; i<G_index; i++){
+
+        if(to_find_ph == db[i].phoneNumber){
+            phone_found=i;
+            break;
+        }
+    }
+
+
 
 }
 

@@ -1,4 +1,4 @@
-1 admin1 9/paoola(N)00099 win@gmail.com admin123 959453741976 aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.5 PyinOoLwin OnlineBankAdmin winhtuttoaungaung3000time
-2 admin2 9/paoola(N)00099 winhtut@gmail.com admin123 959453741976 aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.5 PyinOoLwin OnlineBankAdmin aungaungtomaumgmaung5000
-3 admin3 9/paoola(N)00099 national@gmail.com admin123 959453741976 aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.5 PyinOoLwin OnlineBankAdmin
-4 default 9/paoola(N)00099 institute@gmail.com default 959453741976 aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.5 PyinOoLwin OnlineBankAdmin
+1 Win-admin1 9/paoola(N)00099 win@gmail.com admin123 1234 aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.5 PyinOoLwin 5000 OnlineBankAdmin winhtuttoaungaung3000time
+2 Htut-admin2 9/paoola(N)00099 winhtut@gmail.com admin123 4321 aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.5 PyinOoLwin 5000 OnlineBankAdmin aungaungtomaumgmaung5000
+3 National-admin3 9/paoola(N)00099 national@gmail.com admin123 12345 aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.5 PyinOoLwin 5000 OnlineBankAdmin
+4 default 9/paoola(N)00099 institute@gmail.com default 54321 aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.5 PyinOoLwin 5000 OnlineBankAdmin
