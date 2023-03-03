@@ -6,6 +6,7 @@
 #define ONLINEBANKPJ_ONLINEBANK_H
 #include "stdio.h"
 #include "stdlib.h"
+#include "time.h"
 //#include "user_setting.h"
 #define USERSIZE 1000
 #define DATA_COUNT 20
@@ -30,11 +31,18 @@ int phone_found=-1;
 int check_input(char input[2]);
 void rEgister();
 void login();
+
 int char_counting(char my_char[50]);
 void loading_from_file();
-void main_menu();
-void space_counter();
 void printing_all_data();
+void space_counter();
+void printing_specific_data(int user);
+void recording_all_data_to_file();
+
+
+void main_menu();
+
+
 void email_validation(char to_check[50]);
 void email_exist_checking(char email[50]);
 void compare_two_charArray(char first[200],char second[200]);
@@ -48,8 +56,9 @@ void user_sector();
 void transfer_money();
 void phone_number_finding(unsigned int to_find_ph);
 void money_transaction(int transmit , int receiver , unsigned int amount);
-void printing_specific_data(int user);
+
 void user_withdraw();
+void get_time();
 
 
 struct trans{
@@ -88,6 +97,16 @@ struct info{
 struct info db[USERSIZE];
 
 
+struct myTime{
+
+    char current_time[26];
+
+};
+
+struct myTime getCTime[1];
+
+
+
 void main_menu(){
 
     char input[2];
@@ -102,6 +121,7 @@ void main_menu(){
         rEgister();
     } else if(option ==51){
         printf("Good Bye!\n");
+        recording_all_data_to_file();
         exit(2);
     } else{
         main_menu();
@@ -164,6 +184,8 @@ void user_sector(){
     } else if(option==50){
         user_withdraw();
 
+    } else if(option == 55){
+        recording_all_data_to_file();
     }
 
 
@@ -321,7 +343,8 @@ void rEgister(){
         db[G_index].loan_amount = db[2].loan_amount;
         db[G_index].loan_rate = db[2].loan_rate;
 
-        space_array[G_index]=19;
+        space_array[G_index]=20;
+        db[G_index].trans_amount_limit_perday=db[2].trans_amount_limit_perday;
         G_index++;
 
 
@@ -334,37 +357,6 @@ void rEgister(){
 
 }
 
-void printing_all_data() {
-
-
-    for (int user = 0; user < G_index; user++) {
-
-        printf("%u-%s-%s-%s-%s-%u-%s-%s-%s-%d-%d-%d-%s-%llu-%s-%u-%u-%f-%s-%d", db[user].id, db[user].name, db[user].nrc,
-               db[user].email, db[user].password, db[user].phoneNumber, db[user].encryption_key, db[user].recovery_key,
-               db[user].account_status, db[user].account_type, db[user].account_level, db[user].minimum_opening_deposit,
-               db[user].currency, db[user].current_amount, db[user].loanStatus, db[user].monthly_income,
-               db[user].loan_amount, db[user].loan_rate, db[user].address,db[user].trans_amount_limit_perday);
-        for (int gcc = 0; gcc <= space_array[user] - 19; gcc++) {
-            printf("-%s", db[user].tr[gcc].note);
-        }
-        printf("\n");
-
-    }
-}
-
-void printing_specific_data(int user){
-
-    printf("%u-%s-%s-%s-%s-%u-%s-%s-%s-%d-%d-%d-%s-%llu-%s-%u-%u-%f-%s", db[user].id, db[user].name, db[user].nrc,
-           db[user].email, db[user].password, db[user].phoneNumber, db[user].encryption_key, db[user].recovery_key,
-           db[user].account_status, db[user].account_type, db[user].account_level, db[user].minimum_opening_deposit,
-           db[user].currency, db[user].current_amount, db[user].loanStatus, db[user].monthly_income,
-           db[user].loan_amount, db[user].loan_rate, db[user].address,db[user].trans_amount_limit_perday);
-    for (int gcc = 0; gcc <= space_array[user] - 19; gcc++) {
-        printf("-%s", db[user].tr[gcc].note);
-    }
-    printf("\n");
-
-}
 
 void recovery_key_validation(char reKey[30]){
     int reKey_couunter = char_counting(reKey);
@@ -569,9 +561,13 @@ void loading_from_file(){
 
         for(register int user=0; user < USERSIZE ; user++){
 
-            fscanf(fptr ,"%u%s%s%s%s%u%s%s%s%d%d%d%s%llu%s%u%u%f%s%d",&db[user].id ,&db[user].name ,&db[user].nrc,&db[user].email,&db[user].password,&db[user].phoneNumber,&db[user].encryption_key,&db[user].recovery_key,&db[user].account_status,&db[user].account_type,&db[user].account_level,&db[user].minimum_opening_deposit,&db[user].currency,&db[user].current_amount,&db[user].loanStatus,&db[user].monthly_income,&db[user].loan_amount,&db[user].loan_rate,&db[user].address,&db[user].trans_amount_limit_perday);
+            fscanf(fptr ,"%u%s%s%s%s%u%s%s%s%d%d%d%s%llu%s%u%u%f%s%d",&db[user].id ,&db[user].name ,&db[user].nrc,&db[user].email,
+                   &db[user].password,&db[user].phoneNumber,&db[user].encryption_key,&db[user].recovery_key,
+                   &db[user].account_status,&db[user].account_type,&db[user].account_level,&db[user].minimum_opening_deposit,
+                   &db[user].currency,&db[user].current_amount,&db[user].loanStatus,&db[user].monthly_income,&db[user].loan_amount,
+                   &db[user].loan_rate,&db[user].address,&db[user].trans_amount_limit_perday);
 
-            for(register int trc=0; trc<= space_array[user]-19 ; trc++ ){
+            for(register int trc=0; trc<= space_array[user]-20 ; trc++ ){
                 fscanf(fptr , "%s",&db[user].tr[trc].note[0]);
             }
             if(db[user].id == 0){
@@ -590,6 +586,64 @@ void loading_from_file(){
 
 
 }
+
+void recording_all_data_to_file(){
+
+    FILE *fptr = fopen("encrypted_data.txt","w");
+
+    if(fptr == NULL){
+        printf("[-]File opening error at recording to file function():\n");
+    } else{
+
+        for(int user=0; user<G_index; user++){
+
+            fprintf(fptr,"%u%c%s%c%s%c%s%c%s%c%u%c%s%c%s%c%s%c%d%c%d%c%d%c%s%c%llu%c%s%c%u%c%u%c%f%c%s%c%d",db[user].id ,' ',db[user].name ,' ',db[user].nrc,' ',db[user].email,' ',db[user].password,' ',db[user].phoneNumber,' ',db[user].encryption_key,' ',db[user].recovery_key,' ',db[user].account_status,' ',db[user].account_type,' ',db[user].account_level,' ',db[user].minimum_opening_deposit,' ',db[user].currency,' ',db[user].current_amount,' ',db[user].loanStatus,' ',db[user].monthly_income,' ',db[user].loan_amount,' ',db[user].loan_rate,' ',db[user].address,' ',db[user].trans_amount_limit_perday);
+
+            for(register int trc=0; trc<= space_array[user]-20 ; trc++ ){
+                fprintf(fptr , " %s",&db[user].tr[trc].note[0]);
+            }
+
+            fprintf(fptr,"%c",'\n');
+        }
+
+    }
+
+    printf("Recording complete to 'encrypted_data.txt!' \n");
+
+}
+
+void printing_all_data() {
+
+
+    for (int user = 0; user < G_index; user++) {
+
+        printf("%u-%s-%s-%s-%s-%u-%s-%s-%s-%d-%d-%d-%s-%llu-%s-%u-%u-%f-%s-%d", db[user].id, db[user].name, db[user].nrc,
+               db[user].email, db[user].password, db[user].phoneNumber, db[user].encryption_key, db[user].recovery_key,
+               db[user].account_status, db[user].account_type, db[user].account_level, db[user].minimum_opening_deposit,
+               db[user].currency, db[user].current_amount, db[user].loanStatus, db[user].monthly_income,
+               db[user].loan_amount, db[user].loan_rate, db[user].address,db[user].trans_amount_limit_perday);
+        for (int gcc = 0; gcc <= space_array[user] - 20; gcc++) {
+            printf("-%s", db[user].tr[gcc].note);
+        }
+        printf("\n");
+
+    }
+}
+
+void printing_specific_data(int user){
+
+    printf("%u-%s-%s-%s-%s-%u-%s-%s-%s-%d-%d-%d-%s-%llu-%s-%u-%u-%f-%s-%d", db[user].id, db[user].name, db[user].nrc,
+           db[user].email, db[user].password, db[user].phoneNumber, db[user].encryption_key, db[user].recovery_key,
+           db[user].account_status, db[user].account_type, db[user].account_level, db[user].minimum_opening_deposit,
+           db[user].currency, db[user].current_amount, db[user].loanStatus, db[user].monthly_income,
+           db[user].loan_amount, db[user].loan_rate, db[user].address,db[user].trans_amount_limit_perday);
+    for (int gcc = 0; gcc <= space_array[user] - 20; gcc++) {
+        printf("-%s", db[user].tr[gcc].note);
+    }
+    printf("\n");
+
+}
+
 
 void space_counter(){
 
@@ -744,6 +798,45 @@ void phone_number_finding(unsigned int to_find_ph){
     }
 
 
+
+}
+
+void get_time(){
+
+    time_t tm;
+    time(&tm);
+
+    printf("Current Date/Time = %s", ctime(&tm));
+
+    FILE *fptr = fopen("mytime.txt","w");
+    fprintf(fptr,"%s", ctime(&tm));
+    int index=0;
+    fclose(fptr);
+    getCTime[0].current_time[index]='-';
+
+   FILE *fptr2= fopen("mytime.txt","r");
+
+   char c = fgetc(fptr2);
+
+    while (!feof(fptr2)){
+
+
+        if(c ==' '){
+            getCTime[0].current_time[index]='-';
+            c = fgetc(fptr2);
+            index++;
+        } else{
+
+            getCTime[0].current_time[index]=c;
+            c = fgetc(fptr2);
+            index++;
+        }
+
+
+    }
+
+    fclose(fptr2);
+    printf("\nremoved space: %s",getCTime[0].current_time);
 
 }
 
