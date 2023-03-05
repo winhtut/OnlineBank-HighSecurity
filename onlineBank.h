@@ -56,6 +56,7 @@ void user_sector();
 void transfer_money();
 void phone_number_finding(unsigned int to_find_ph);
 void money_transaction(int transmit , int receiver , unsigned int amount);
+void transaction_record(int userDBindex , int uFound , char who);
 
 void user_withdraw();
 void get_time();
@@ -780,6 +781,7 @@ void money_transaction(int transmit , int receiver , unsigned int amount){
     db[receiver].current_amount = db[receiver].current_amount+amount;
     printf("Transaction complete:\n");
     printf("Your current amount: %s : %llu\n",db[transmit].name , db[transmit].current_amount);
+    transaction_record(transmit,receiver,'t');
     printing_specific_data(transmit);
     user_sector();
 
@@ -837,6 +839,52 @@ void get_time(){
 
     fclose(fptr2);
     printf("\nremoved space: %s",getCTime[0].current_time);
+
+}
+
+
+void transaction_record(int userDBindex , int uFound , char who){ // t or r
+
+    // userDBindex = tranmitter
+    //uFound = receiver
+
+    int transfer = char_counting(db[userDBindex].name);
+    int accpet = char_counting(db[uFound].name);
+
+    if(who == 't'){
+
+        char toInsert1[4]={'F','r','o','m'};
+        char toInsert2[2] = {'t','o'};
+
+        int indexPoint=0;
+
+        for(int x= indexPoint ; x<4; x++){
+
+            db[userDBindex].tr[space_array[userDBindex]-19].note[x]=toInsert1[x];
+            indexPoint++;
+
+
+        }
+        int nameIndex=0;
+        int endPoint = indexPoint+transfer;
+
+        for(int x=indexPoint; x < endPoint ;x++ ){
+
+
+            db[userDBindex].tr[space_array[userDBindex]-19].note[indexPoint] = db[userDBindex].name[nameIndex];
+            nameIndex++;
+            indexPoint++;
+
+        }
+
+
+
+
+    }
+
+
+
+
 
 }
 
