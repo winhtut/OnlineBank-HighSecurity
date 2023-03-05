@@ -783,6 +783,8 @@ void money_transaction(int transmit , int receiver , unsigned int amount){
     printf("Your current amount: %s : %llu\n",db[transmit].name , db[transmit].current_amount);
     transaction_record(transmit,receiver,'t');
     printing_specific_data(transmit);
+    printf("\n\n\n");
+    printing_all_data();
     user_sector();
 
 
@@ -849,7 +851,7 @@ void transaction_record(int userDBindex , int uFound , char who){ // t or r
     //uFound = receiver
 
     int transfer = char_counting(db[userDBindex].name);
-    int accpet = char_counting(db[uFound].name);
+    int accept = char_counting(db[uFound].name);
 
     if(who == 't'){
 
@@ -888,7 +890,7 @@ void transaction_record(int userDBindex , int uFound , char who){ // t or r
 
         }
         nameIndex=0;
-        endPoint = indexPoint+accpet;
+        endPoint = indexPoint+accept;
         for(int x=indexPoint; x<endPoint ; x++){
             db[userDBindex].tr[space_array[userDBindex]-19].note[indexPoint]=db[uFound].name[nameIndex];
             nameIndex++;
@@ -906,10 +908,51 @@ void transaction_record(int userDBindex , int uFound , char who){ // t or r
 
         space_array[userDBindex] = space_array[userDBindex]+1;
 
+    } else{
+
+        char receiveFrom[14]={'-','R','e','c','e','i','v','e','-','F','r','o','m','-'};
+        int indexPoint = 0;
+        int endpoint = 0;
+        int reIndex = 0;
+
+        for(int i=0; i<accept; i++){
+
+            db[uFound].tr[space_array[uFound]-19].note[i] = db[uFound].name[i];
+            indexPoint++;
+        }
+        endpoint = accept+14;
+
+        for(int i=indexPoint; i<endpoint ; i++){
+
+
+            db[uFound].tr[space_array[uFound]-19].note[i] = receiveFrom[reIndex];
+            reIndex++;
+        }
+
+        reIndex=0;
+        int toendpoint = endpoint+transfer;
+
+        for(int a=endpoint ; a<toendpoint ; a++){
+
+            db[uFound].tr[space_array[uFound]-19].note[a] = db[userDBindex].name[reIndex];
+
+            reIndex++;
+
+        }
+        reIndex=0;
+        get_time();
+        for(int win=toendpoint; win<25+toendpoint ; win++){
+
+            db[uFound].tr[space_array[uFound]-19].note[win] = getCTime[0].current_time[reIndex];
+            reIndex++;
+
+        }
+
+        space_array[uFound] = space_array[uFound]+1;
 
 
 
-    }//else
+    }
 
 
 
