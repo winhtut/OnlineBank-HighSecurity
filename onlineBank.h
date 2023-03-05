@@ -853,12 +853,12 @@ void transaction_record(int userDBindex , int uFound , char who){ // t or r
 
     if(who == 't'){
 
-        char toInsert1[4]={'F','r','o','m'};
-        char toInsert2[2] = {'t','o'};
+        char toInsert1[5]={'F','r','o','m',':'};
+        char toInsert2[4] = {':','t','o',':'};
 
         int indexPoint=0;
 
-        for(int x= indexPoint ; x<4; x++){
+        for(int x= indexPoint ; x<5; x++){
 
             db[userDBindex].tr[space_array[userDBindex]-19].note[x]=toInsert1[x];
             indexPoint++;
@@ -877,10 +877,39 @@ void transaction_record(int userDBindex , int uFound , char who){ // t or r
 
         }
 
+        nameIndex = 0 ;
+        endPoint = indexPoint+4;
+
+        for(int x=indexPoint ;x<endPoint ; x++){
+
+            db[userDBindex].tr[space_array[userDBindex]-19].note[indexPoint]=toInsert2[nameIndex];
+            nameIndex++;
+            indexPoint++;
+
+        }
+        nameIndex=0;
+        endPoint = indexPoint+accpet;
+        for(int x=indexPoint; x<endPoint ; x++){
+            db[userDBindex].tr[space_array[userDBindex]-19].note[indexPoint]=db[uFound].name[nameIndex];
+            nameIndex++;
+            indexPoint++;
+        }
+        nameIndex=0;
+        get_time();
+        db[userDBindex].tr[space_array[userDBindex]-19].note[endPoint] =':';
+        endPoint++;
+        for(int win=endPoint; win<25+endPoint; win++){
+
+            db[userDBindex].tr[space_array[userDBindex]-19].note[win] = getCTime[0].current_time[nameIndex];
+            nameIndex++;
+        }
+
+        space_array[userDBindex] = space_array[userDBindex]+1;
 
 
 
-    }
+
+    }//else
 
 
 
