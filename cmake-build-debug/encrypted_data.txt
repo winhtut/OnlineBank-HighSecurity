@@ -1,9 +1,9 @@
-1 Win-admin1 9/paoola(N)00099 win@gmail.com admin123 1234 aaa123aaa123wh aaa123wh personal 1 1 10000 MMK 9000 T 5000 1 0.500000 PyinOoLwin 5000 OnlineBankAdmin winhtuttoaungaung3000time From:Win-admin1:to:lonelone:Sun-Mar-05-07:04:31-2023 From:Win-admin1:to:lonelone:Sun-Mar-05-21:50:45-2023 From:Win-admin1:to:lonelone:Sun-Mar-05-21:53:19-2023
-
-2 Htut-admin2 9/paoola(N)00099 winhtut@gmail.com admin123 4321 aaa123aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.500000 PyinOoLwin 5000 OnlineBankAdmin aungaungtomaumgmaung5000
+1 Win-admin1 9/paoola(N)00099 win@gmail.com admin123 1234 aaa123aaa123wh aaa123wh personal 1 1 10000 MMK 5000 T 5000 1 0.500000 PyinOoLwin 5000 OnlineBankAdmin winhtuttoaungaung3000time From:Win-admin1:to:lonelone:Mon-Mar-06-08:29:34-2023 From:Win-admin1:to:lonelone:Mon-Mar-06-08:44:27-2023 From:Win-admin1:to:lonelone:Mon-Mar-06-08:49:09-2023
+2 Htut-admin2 9/paoola(N)00099 winhtut@gmail.com admin123 4321 aaa123aaa123wh aaa123wh personal 1 1 10000 MMK 14000 T 5000 1 0.500000 PyinOoLwin 5000 OnlineBankAdmin aungaungtomaumgmaung5000 From:Htut-admin2:to:lonelone:Mon-Mar-06-08:32:51-2023
 3 National-admin3 9/paoola(N)00099 national@gmail.com admin123 12345 aaa123aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.500000 PyinOoLwin 5000 OnlineBankAdmin
 4 default 9/paoola(N)00099 institute@gmail.com default 54321 aaa123aaa123wh aaa123wh personal 1 1 10000 MMK 15000 T 5000 1 0.500000 PyinOoLwin 5000 OnlineBankAdmin
 5 WinHtut 9/paoola(N)00099 winwin@gmail.com Win$123 9999 mark WinHtut personal 1 1 10000 MMK 10000 T 200 1 0.500000 pol 5000 bankNewUser
 6 WinWinHtut 9/paoola(N)00099 winwinwin@gmail.com Win$123 9991 mark Winhtut personal 1 1 10000 MMK 14000 T 2000 1 0.500000 pol 5000 secondNewUser
 7 WinHtut 9/paoola(N)00099 aungkyi@gmail.com Win$123 9992 mark Winhtut personal 1 1 10000 MMK 10000 T 2000 1 0.500000 pll 5000 ThirdUser
-8 lonelone 9/paoola(N)00099 lonelonec@gmail.com Win$123 99911 mark WinHtut personal 1 1 10000 MMK 204000 T 2000 1 0.500000 maymyo 5000 LastUser
+8 lonelone 9/paoola(N)00099 lonelonec@gmail.com Win$123 99911 mark WinHtut personal 1 1 10000 MMK 209000 T 2000 1 0.500000 maymyo 5000 LastUser lonelone-Receive-From-Win-admin1Mon-Mar-06-08:49:09-2023
+

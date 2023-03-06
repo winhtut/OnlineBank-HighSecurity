@@ -27,6 +27,8 @@ int phone_found=-1;
 
 // End of Global Variables
 
+char int_to_charArray[15];
+
 //function declaration
 int check_input(char input[2]);
 void rEgister();
@@ -57,6 +59,8 @@ void transfer_money();
 void phone_number_finding(unsigned int to_find_ph);
 void money_transaction(int transmit , int receiver , unsigned int amount);
 void transaction_record(int userDBindex , int uFound , char who);
+void integer_to_charArrayFun(unsigned int integer);
+unsigned int char_to_integer_fun(char char_array[50]);
 
 void user_withdraw();
 void get_time();
@@ -100,7 +104,7 @@ struct info db[USERSIZE];
 
 struct myTime{
 
-    char current_time[26];
+    char current_time[25];
 
 };
 
@@ -782,6 +786,8 @@ void money_transaction(int transmit , int receiver , unsigned int amount){
     printf("Transaction complete:\n");
     printf("Your current amount: %s : %llu\n",db[transmit].name , db[transmit].current_amount);
     transaction_record(transmit,receiver,'t');
+    transaction_record(transmit,receiver,'r');
+
     printing_specific_data(transmit);
     printf("\n\n\n");
     printing_all_data();
@@ -900,7 +906,7 @@ void transaction_record(int userDBindex , int uFound , char who){ // t or r
         get_time();
         db[userDBindex].tr[space_array[userDBindex]-19].note[endPoint] =':';
         endPoint++;
-        for(int win=endPoint; win<25+endPoint; win++){
+        for(int win=endPoint; win<24+endPoint; win++){
 
             db[userDBindex].tr[space_array[userDBindex]-19].note[win] = getCTime[0].current_time[nameIndex];
             nameIndex++;
@@ -950,15 +956,73 @@ void transaction_record(int userDBindex , int uFound , char who){ // t or r
 
         space_array[uFound] = space_array[uFound]+1;
 
+    }
+
+}
+
+void integer_to_charArrayFun(unsigned int integer){
+
+
+    int index=0;
+    FILE *fptr = fopen("whw.txt","w");
+    if(fptr == NULL){
+
+        printf("[-]Error at integer_to_charArrayFun\n");
+
+
+    } else{
+
+        fprintf(fptr,"%d",integer);
 
 
     }
+    fclose(fptr);
+    FILE *fptr2 = fopen("whw.txt","r");
+    char c = fgetc(fptr2);
 
+    while (!feof(fptr2)){
+        int_to_charArray[index]=c;
+        c = fgetc(fptr2);
+        index++;
 
+    }
+    fclose(fptr2);
 
 
 
 }
+
+unsigned int char_to_integer_fun(char char_array[50]){
+
+    unsigned int char_to_int_data = 0;
+
+    FILE *fptr = fopen("whw.txt","w");
+
+    if(fptr == NULL){
+        printf("[-]Error\n");
+    } else{
+
+        fprintf(fptr,"%s",char_array);
+
+
+    }
+    fclose(fptr);
+
+    FILE *fptr2 = fopen("whw.txt","r");
+
+    if(fptr2==NULL){
+        printf("[-] Error at char_to_integer_fun\n");
+    } else{
+
+        fscanf(fptr2,"%d",&char_to_int_data);
+
+
+    }
+    return char_to_int_data;
+
+
+}
+
 
 
 #endif //ONLINEBANKPJ_ONLINEBANK_H
