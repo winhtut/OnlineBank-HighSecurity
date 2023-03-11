@@ -25,6 +25,11 @@ int eKey_valid=-1;
 int reKey_valid=-1;
 int phone_found=-1;
 
+
+char month[3];
+char day[2];
+char year[4];
+
 // End of Global Variables
 
 char int_to_charArray[15];
@@ -64,6 +69,11 @@ unsigned int char_to_integer_fun(char char_array[50]);
 
 void user_withdraw();
 void get_time();
+
+//time
+void time_class_last_record(int user_index);
+void time_class(int user_index);
+void time_class_get_date(char last_record[]);
 
 
 struct trans{
@@ -816,6 +826,8 @@ void get_time(){
     time_t tm;
     time(&tm);
 
+    int time_space_counter =0;
+
     printf("Current Date/Time = %s", ctime(&tm));
 
     FILE *fptr = fopen("mytime.txt","w");
@@ -832,9 +844,24 @@ void get_time(){
 
 
         if(c ==' '){
-            getCTime[0].current_time[index]='-';
-            c = fgetc(fptr2);
-            index++;
+            time_space_counter++;
+
+            if(time_space_counter==1){
+                getCTime[0].current_time[index]='!';
+                c = fgetc(fptr2);
+                index++;
+            } else if(time_space_counter==4){
+                getCTime[0].current_time[index]='@';
+                c = fgetc(fptr2);
+                index++;
+
+            } else {
+                getCTime[0].current_time[index] = '-';
+                c = fgetc(fptr2);
+                index++;
+
+            }
+
         } else{
 
             getCTime[0].current_time[index]=c;
@@ -1021,6 +1048,70 @@ unsigned int char_to_integer_fun(char char_array[50]){
     return char_to_int_data;
 
 
+}
+
+
+void time_class(int user_index){
+
+
+    time_class_last_record(user_index);
+}
+
+void time_class_last_record(int user_index){
+
+    int last=0;
+    int records =space_array[user_index]-19;
+    for(int i=0; i<records; i++){
+        last=i;
+    }
+
+    printf("\n User Last Rcord: %s\n",db[user_index].tr[last].note);
+
+    time_class_get_date(db[user_index].tr[last].note);
+
+}
+
+void time_class_get_date(char last_record[]){
+
+    // to get month name , day , year
+
+    int last_record_counter = char_counting(last_record);
+
+    int i=0;
+    for(i=0; i<last_record_counter; i++){
+        if(last_record[i]=='!'){
+            break;
+        }
+    }
+    i++;
+
+    for(int a=0; a<3; a++){
+        month[a]=last_record[i];
+        i++;
+    }
+    printf("get month: %s\n",month);
+
+    day[0] = last_record[i+1];
+    day[1] = last_record[i+2];
+
+    unsigned int get_day = char_to_integer_fun(day);
+    printf("get day %u\n",get_day);
+
+    int z=0;
+    for(z=0; z<last_record_counter; z++){
+
+        if(last_record[z]=='@'){
+            break;
+        }
+    }
+    for(int x=0; x<4; x++){
+        z++;
+        year[x] = last_record[z];
+
+    }
+
+    unsigned int get_year = char_to_integer_fun(year);
+    printf(" year: %d\n",get_year);
 }
 
 
